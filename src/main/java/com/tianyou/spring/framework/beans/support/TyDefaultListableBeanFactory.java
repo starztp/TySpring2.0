@@ -7,13 +7,16 @@ import com.tianyou.spring.framework.context.support.TyAbstractApplicationContext
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * IOC容器初始化在不扩展的情况下的默认实现
+ */
 public class TyDefaultListableBeanFactory extends TyAbstractApplicationContext implements TyBeanFactory {
 
     //存储注册信息的BeanDefinition
     protected final Map<String,TyBeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String,TyBeanDefinition>();
 
     @Override
-    public Object getBean(String beanname) {
+    public Object getBean(String beanname) throws Exception {
         return null;
     }
 

@@ -5,5 +5,7 @@ package com.tianyou.spring.framework.beans;
  */
 public interface TyBeanFactory {
 
-    Object getBean(String beanname);
+    Object getBean(String beanname) throws Exception;
+
+    Object getBean(Class<?> beanclass) throws Exception;
 }
