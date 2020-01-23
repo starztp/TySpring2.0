@@ -50,7 +50,7 @@ public class TyBeanDefinitionReader {
      */
     private void doScanner(String packagepath) {
         //将包路径转为系统文件路径
-        URL url = this.getClass().getClassLoader().getResource("/" + packagepath.replaceAll("\\.", "/"));
+        URL url = this.getClass().getResource("/" + packagepath.replaceAll("\\.","/"));
         File filepath = new File(url.getFile());
         for (File file : filepath.listFiles()) {
             if (file.isDirectory()) {

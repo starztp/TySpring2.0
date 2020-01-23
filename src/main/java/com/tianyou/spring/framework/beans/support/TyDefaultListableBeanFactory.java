@@ -20,4 +20,9 @@ public class TyDefaultListableBeanFactory extends TyAbstractApplicationContext i
         return null;
     }
 
+    @Override
+    public Object getBean(Class<?> beanclass) throws Exception {
+        return null;
+    }
+
 }
