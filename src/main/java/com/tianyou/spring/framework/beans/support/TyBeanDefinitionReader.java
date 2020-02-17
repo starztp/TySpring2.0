@@ -70,14 +70,21 @@ public class TyBeanDefinitionReader {
      *
      * @return
      */
-    public List<TyBeanDefinition> loadBeanDefinitions(){
+    public List<TyBeanDefinition> loadBeanDefinitions() throws ClassNotFoundException {
         List<TyBeanDefinition> definitionList=new ArrayList<>();
         for(String classname:registryBeannClasses){
+            Class<?> beanclass=Class.forName(classname);
             TyBeanDefinition beanDefinition=doCreateBeanDefinition(classname);
-            if (beanDefinition==null){
+            //忽略接口bean对象
+            if (beanDefinition==null||beanclass.isInterface()){
                 continue;
             }
             definitionList.add(beanDefinition);
+            //遍历bean的每个接口，添加到容器中
+            Class<?>[] interfaces=beanclass.getInterfaces();
+            for(Class<?> interfaze:interfaces){
+                definitionList.add(doCreateBeanDefinition(interfaze.getName()));
+            }
         }
         return definitionList;
     }

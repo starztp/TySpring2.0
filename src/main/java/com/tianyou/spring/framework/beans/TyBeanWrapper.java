@@ -5,7 +5,7 @@ package com.tianyou.spring.framework.beans;
  */
 public class TyBeanWrapper {
 
-    private Object wrappedInstance;//实例化的类
+    private Object wrappedInstance;//bean的实例
     private Class<?> wrappedClass;  //实例化类的class
 
     public TyBeanWrapper(Object wrappedInstance){

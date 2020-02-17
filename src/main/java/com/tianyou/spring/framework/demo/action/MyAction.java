@@ -1,5 +1,4 @@
-package com.tianyou.spring.framework.demo.action;
-
+package com.gupaoedu.vip.spring.demo.action;
 
 import com.tianyou.spring.framework.annotation.TyAutowired;
 import com.tianyou.spring.framework.annotation.TyController;
@@ -7,10 +6,17 @@ import com.tianyou.spring.framework.annotation.TyRequestMapping;
 import com.tianyou.spring.framework.annotation.TyRequestParam;
 import com.tianyou.spring.framework.demo.service.IModifyService;
 import com.tianyou.spring.framework.demo.service.IQueryService;
+import com.tianyou.spring.framework.webmvc.servlet.TyModelAndView;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+
 
 /**
  * 公布接口url
@@ -27,42 +33,54 @@ public class MyAction {
 	IModifyService modifyService;
 
 	@TyRequestMapping("/query.json")
-	public void query(HttpServletRequest request, HttpServletResponse response,
-					  @TyRequestParam("name") String name){
+	public TyModelAndView query(HttpServletRequest request, HttpServletResponse response,
+								@TyRequestParam("name") String name){
 		String result = queryService.query(name);
-		out(response,result);
+		return out(response,result);
 	}
-	
+
 	@TyRequestMapping("/add*.json")
-	public void add(HttpServletRequest request,HttpServletResponse response,
-			   @TyRequestParam("name") String name,@TyRequestParam("addr") String addr){
-		String result = modifyService.add(name,addr);
-		out(response,result);
+	public TyModelAndView add(HttpServletRequest request,HttpServletResponse response,
+							  @TyRequestParam("name") String name,@TyRequestParam("addr") String addr){
+		String result = null;
+		try {
+			result = modifyService.add(name,addr);
+			return out(response,result);
+		} catch (Exception e) {
+//			e.printStackTrace();
+			Map<String,Object> model = new HashMap<String,Object>();
+			model.put("detail",e.getMessage());
+//			System.out.println(Arrays.toString(e.getStackTrace()).replaceAll("\\[|\\]",""));
+			model.put("stackTrace", Arrays.toString(e.getStackTrace()).replaceAll("\\[|\\]",""));
+			return new TyModelAndView("500",model);
+		}
+
 	}
-	
+
 	@TyRequestMapping("/remove.json")
-	public void remove(HttpServletRequest request,HttpServletResponse response,
-		   @TyRequestParam("id") Integer id){
+	public TyModelAndView remove(HttpServletRequest request,HttpServletResponse response,
+								 @TyRequestParam("id") Integer id){
 		String result = modifyService.remove(id);
-		out(response,result);
+		return out(response,result);
 	}
-	
+
 	@TyRequestMapping("/edit.json")
-	public void edit(HttpServletRequest request,HttpServletResponse response,
-			@TyRequestParam("id") Integer id,
-			@TyRequestParam("name") String name){
+	public TyModelAndView edit(HttpServletRequest request,HttpServletResponse response,
+							   @TyRequestParam("id") Integer id,
+							   @TyRequestParam("name") String name){
 		String result = modifyService.edit(id,name);
-		out(response,result);
+		return out(response,result);
 	}
-	
-	
-	
-	private void out(HttpServletResponse resp,String str){
+
+
+
+	private TyModelAndView out(HttpServletResponse resp,String str){
 		try {
 			resp.getWriter().write(str);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
-	
+
 }

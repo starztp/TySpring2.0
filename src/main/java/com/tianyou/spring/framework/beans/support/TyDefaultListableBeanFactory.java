@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TyDefaultListableBeanFactory extends TyAbstractApplicationContext implements TyBeanFactory {
 
-    //存储注册信息的BeanDefinition
+    //存储BeanDefinition的容器
     protected final Map<String,TyBeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String,TyBeanDefinition>();
 
     @Override
